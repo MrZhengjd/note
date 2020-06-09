@@ -1,0 +1,25 @@
+1.mySql中存在一个数据库information_schema是用来存储数据库里面的表和数据库的使用情况的
+对于这个有着查库和表的大小的sql
+	1.查看各库的大小：SELECT SUM(DATA_LENGTH)+SUM(INDEX_LENGTH) FROM information_schema.tables WHERE TABLE_SCHEMA='database_name';
+	
+	2.查看各表的大小：SELECT TABLE_NAME,DATA_LENGTH+INDEX_LENGTH,TABLE_ROWS FROM information_schema.tables WHERE TABLE_SCHEMA='database_name' AND TABLE_NAME='table_name';
+
+	3.查看所有数控库容量大小：
+	select
+	table_schema as '数据库',
+	sum(table_rows) as '记录数',
+	sum(truncate(data_length/1024/1024, 2)) as '数据容量(MB)',
+	sum(truncate(index_length/1024/1024, 2)) as '索引容量(MB)'
+	from information_schema.tables
+	group by table_schema
+	order by sum(data_length) desc, sum(index_length) desc;
+
+	4.查看所有数据库各表容量大小
+	select
+	table_schema as '数据库',
+	table_name as '表名',
+	table_rows as '记录数',
+	truncate(data_length/1024/1024, 2) as '数据容量(MB)',
+	truncate(index_length/1024/1024, 2) as '索引容量(MB)'
+	from information_schema.tables
+	order by data_length desc, index_length desc;

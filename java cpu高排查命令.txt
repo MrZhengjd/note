@@ -1,0 +1,14 @@
+1：top查看cpu最高的线程，获得pid
+2.ps aux|grep pid 获得是哪个项目占用高cpu
+3.首先显示线程列表:
+ps -mp pid -o THREAD,tid,time
+4.其次将需要的线程ID转换为16进制格式：
+printf "%x\n" tid
+5最后打印线程的堆栈信息：
+jstack pid |grep tid -A 30
+
+死锁检测
+1.jps -l 查看java PID
+2.jstack -l pid 控制台输出dump信息,发现死锁会提示的
+3.输入jConsole 打开图形界面，点击线程，检测有没有死锁
+java  spi机制 （java可扩展编程）

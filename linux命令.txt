@@ -1,0 +1,4 @@
+nohup java -jar shareniu.jar &
+nohup 意思是不挂断运行命令,当账户退出或终端关闭时,程序仍然运行
+
+一般给程序添加./startup.sh需要开启权限，如下的指令 chmod u+x *.sh

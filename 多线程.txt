@@ -1,0 +1,7 @@
+多线程的底层支持：volatile，synchronize，automic
+java并发的本质是共享内存-》各地保存本地缓存，更新是先刷新到主存，然后再通知其他线程，简单概况A-》总内存-》刷新到B本地缓存
+java代码的执行，为了提高效率会存在重排序，而由于各地内存不可见，导致缓存不一定是最新的，为了解决这个问题（内存可见性）就引入了
+内存屏障这个概念
+happen-before原则
+
+retreenlock 独占锁 接口lock lock与synchronize的区别，lock多等待方式，可以主动释放锁

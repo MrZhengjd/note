@@ -1,0 +1,4 @@
+如果项目是多模块的，先将总项目install，之后是子项目分别install，注意他们的依赖关系
+
+比如dao的运行需要依赖domain，service的运行需要依赖dao，web的运行需要依赖service，所以先install总项目，
+再install domain，然后dao-》service——》web

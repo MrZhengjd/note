@@ -1,0 +1,1 @@
+create INDEX INDEX_CLUB ON room_his(CLUB_ID);

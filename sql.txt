@@ -1,0 +1,18 @@
+﻿create TABLE room_anbao_room LIKE room_douniu_room;
+create table room_anbao_win_record like room_dn_win_record;
+DROP TABLE if EXISTS proxy_day_statistic;
+CREATE TABLE proxy_day_statistic(ID BIGINT(20) NOT NULL auto_increment PRIMARY KEY,PLAYER_ID BIGINT(20) NOT NULL COMMENT '玩家id',DATE_TIME VARCHAR(20) not NULL COMMENT '日期',
+OUT_SCORE DOUBLE COMMENT '添加出去的分数',RECYCLE_SCORE DOUBLE COMMENT '回收的分数',XIAN_TAKE_SCORE BIGINT COMMENT '闲家抽成分数'
+,VILLAGE_TAKE_SCORE BIGINT COMMENT '庄家抽成分数' )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+DROP TABLE if EXISTS player_day_statistic;
+CREATE TABLE player_day_statistic(ID BIGINT(20) NOT NULL auto_increment PRIMARY KEY,PLAYER_ID BIGINT(20) NOT NULL COMMENT '玩家id',
+INVITER_ID BIGINT(11) COMMENT '上级玩家id',DATE_TIME VARCHAR(20) not NULL COMMENT '日期',
+OUT_SCORE DOUBLE COMMENT '被添加分数',RECYCLE_SCORE DOUBLE COMMENT '被回收的分数',XIAN_TAKE_SCORE BIGINT COMMENT '闲家抽成分数'
+,VILLAGE_TAKE_SCORE BIGINT COMMENT '庄家抽成分数' )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+ALTER TABLE mine_game_constant ADD COLUMN ROBOT_RATE INTEGER(4) COMMENT '机器人胜率';
+UPDATE player set IS_AGENT=1 where PLAYER_ID=258902;
+alter table club_score_record_20200313 add COLUMN SAFE_BOX_OPERATION TINYINT(1) not null COMMENT '操作保险柜，1为是' DEFAULT 0;
+分组前几条数据的sql写法，
+SELECT a.* from (SELECT s.*,(SELECT COUNT(*) FROM club_score_record_20200313 t where t.PLAYER_ID=s.PLAYER_ID AND t.CREATE_DATE<s.CREATE_DATE ) as group_id FROM club_score_record_20200313 s) a
+WHERE a.group_id <10;
+--思路：先子查询搜整个符合情况的数据：然后再从这些数据里面去查找，当做是一个表，由于分组后，需要再获取前几条的数据，所以需要再把这些数据统计成一个字段，又一个子查询，作为条件去找前几的数据

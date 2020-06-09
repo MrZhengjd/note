@@ -1,0 +1,4 @@
+﻿优化方案1
+战绩记录现在用的是每次记录开一个线程，并且用的是bio通信，优化方案如下：
+1.采用线程池
+2.采用CloseableHttpAsyncClient替代CloseableHttpClient
