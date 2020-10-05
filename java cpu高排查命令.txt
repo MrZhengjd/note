@@ -1,11 +1,22 @@
-1：top查看cpu最高的线程，获得pid
-2.ps aux|grep pid 获得是哪个项目占用高cpu
-3.首先显示线程列表:
-ps -mp pid -o THREAD,tid,time
-4.其次将需要的线程ID转换为16进制格式：
-printf "%x\n" tid
-5最后打印线程的堆栈信息：
-jstack pid |grep tid -A 30
+第一种方式：
+	1top查看cpu最高的线程，获得pid
+	2.ps aux|grep pid 获得是哪个项目占用高cpu
+	3.首先显示线程列表:
+	ps -mp pid -o THREAD,tid,time
+	4.其次将需要的线程ID转换为16进制格式：
+	printf "%x\n" tid
+	5最后打印线程的堆栈信息：
+	jstack pid |grep tid -A 30
+
+
+第二种方式：
+	1.top -c 查看cpu最高的线程，获得pid 例如18373
+	2.top -Hp pid 这里的pid就是18373，要输入大写P 排序
+	3.其次将需要的线程ID转换为16进制格式：
+	printf "%x\n" tid   例如 2de56
+	4.jstack pid > temp.stack
+	5.用txt打开temp.stack 查看对应的2de56代码块
+
 
 死锁检测
 1.jps -l 查看java PID
