@@ -1,0 +1,4 @@
+三个主要命令
+ git add .			先添加修改代码
+ git commit -m ""		然后提交代码
+ git push 			同步到远程代码库

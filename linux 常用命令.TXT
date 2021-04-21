@@ -1,5 +1,5 @@
 linux 常用命令
-
+lsof -p pid 查看正在运行的进程的目录
 ls
 ll
 tar xvfz
