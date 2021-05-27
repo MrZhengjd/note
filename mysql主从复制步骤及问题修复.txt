@@ -1,0 +1,82 @@
+1.修改my.ini文件
+	1.修改master文件
+	sql_mode ='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+	character-set-server=utf8
+	collation-server=utf8_general_ci
+	basedir=F:\mysql\mysql-5.7.34-winx64\
+	datadir=F:\mysql\mysql-5.7.34-winx64\data\
+	port=3307
+	skip-grant-tables
+	#basedir表示mysql安装路径
+	#datadir表示mysql数据文件存储路径
+	#port表示mysql端口
+	#skip-grant-tables表示忽略密码
+	server-id=1
+	binlog-do-db=property1           
+	#复制的database
+
+
+	2.修改slave的my.ini文件
+	server-id=1
+	binlog-do-db=property1
+
+主要是加上面这两个配置
+	
+	进入slave服务器，运行：
+mysql> show slave status\G
+
+         .......
+             Relay_Log_File: localhost-relay-bin.000001
+             Relay_Log_Pos: 151
+           Relay_Master_Log_File: localhost-bin.000002
+             Slave_IO_Running: Yes
+             Slave_SQL_Running: No
+             Replicate_Do_DB: 
+             Replicate_Ignore_DB: 
+         ......
+
+
+slave_sql_running:no		问题及修复
+
+Slave_SQL_Running: No
+1.程序可能在slave上进行了写操作
+
+2.也可能是slave机器重起后，事务回滚造成的.
+
+一般是事务回滚造成的：
+解决办法一：
+mysql> stop slave ;
+mysql> set GLOBAL SQL_SLAVE_SKIP_COUNTER=1;    #客户端运行，用来跳过几个事件，只有当同步进程出现错误而停止的时候才可以执行。
+mysql> start slave ;
+
+
+
+slave_io_running:no		问题及修复
+首先停掉Slave服务：stop slave ;
+到主服务器上查看主机状态：
+记录File和Position对应的值
+
+进入master
+mysql> show master status;
++----------------------+----------+--------------+------------------+
+| File                 | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++----------------------+----------+--------------+------------------+
+| localhost-bin.000001 | 151 |              |                  | 
++----------------------+----------+--------------+------------------+
+1 row in set (0.00 sec)
+
+
+然后到slave服务器上执行手动同步：
+mysql> change master to 
+> master_host='master_ip',
+> master_user='user', 
+> master_password='password', 
+> master_port=3306, 
+> master_log_file='localhost-bin.000001', 
+> master_log_pos=151,master_auto_position=0;
+
+
+
+1 row in set (0.00 sec)
+mysql> start slave ;
+1 row in set (0.00 sec)
