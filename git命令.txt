@@ -5,3 +5,4 @@
  git pull origin master 	拉取远程最新代码
  git init			把本地目录设为一个仓库
  git remote add origin https://github.com/MrZhengjd/learning.git
+ git push https://github.com/MrZhengjd/learning.git master

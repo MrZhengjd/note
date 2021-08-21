@@ -1,0 +1,1 @@
+1.添加插件Choose Runtime 会自行选择jdk运行
