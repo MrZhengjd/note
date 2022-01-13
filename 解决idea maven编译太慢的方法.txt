@@ -1,0 +1,2 @@
+idea 点击file -》Setting -》maven-》runner 
+然后修改VM Options ，添加如下代码：-DarchetypeCatalog=internal
