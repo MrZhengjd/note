@@ -1,0 +1,18 @@
+在微服务架构中，经常会使用轻量级的消息代理来构建一个公用的消息主题，让所有的微服务实例都 连接上来
+所以spring cloud bus kafka诞生了。并且spring cloud bus kafka配合spring cloud config可以实现微服务应用
+配置的动态更新
+
+
+SpringCloundGateWay		处理流程
+
+			             client
+[			gatewayHandlerMapping		]
+[			      gatewayHandler			]
+[			            Filter			]
+[			            Filter			]
+[			            Filter			]
+[			            Filter			]
+[			  destinateService			]
+
+请求进来后先看handlerMapping里面有没有对应的Handler,有就发送到这个handler去处理
+handler下面还绑定了一下Filter去过滤部分消息 最后转发到目标服务上去
